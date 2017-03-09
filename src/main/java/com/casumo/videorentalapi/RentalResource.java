@@ -4,8 +4,8 @@ package com.casumo.videorentalapi;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Path("/store")
@@ -40,26 +40,39 @@ public class RentalResource {
     }
 
 
-    /** returns the available films: not rented */
+    /** returns the not rented films */
 
     @GET
-    @Path("films")
-    public List<Film> getAvailableFilms(Boolean isRented) {
+    @Path("films/available")
+    public List<Film> getAvailableFilms(@QueryParam("is_rented") boolean isRented) {
 
-        if (isRented == null) {
+        List<Film> result = new ArrayList<>();
 
-            return filmDAO.getFilms();
+        for (Film film : filmDAO.getFilms()) {
 
-        } else {
+            if(film.isRented() == isRented) {
 
-            return filmDAO.getFilms().stream()
-                    .filter(film ->film.isRented())
-                    .collect(Collectors.toList());
+                result.add(film);
+            }
+
         }
+
+        return result;
+
     }
 
 
-    /** returns the rentals by customer's id*/
+    /** returns all the customers */
+
+    @GET
+    @Path("customers")
+    public List<Customer> getCustomers() {
+
+        return customerDAO.getCustomers();
+    }
+
+
+    /** returns the rentals by customer's id */
 
     @GET
     @Path("customers/{customer_id}/rentals")
@@ -75,8 +88,9 @@ public class RentalResource {
     }
 
 
-    /** creates a new rental */
 
+    /** creates a new rental */
+/*
     @POST
     @Path("customers/{customer_id}/rentals")
     public Rental rent(@PathParam("customer_id") int customerID, Customer customer, Film film, int rentalID, int rentalDays) {
@@ -84,29 +98,32 @@ public class RentalResource {
         return rentalService.createRentalFilm(customer, film, rentalID, rentalDays);
 
     }
+*/
 
 
     /** returns the price of the customer's rental */
-
+/*
     @GET
     @Path("customers/{customer_id}/rentals/price")
-    public Double totalRentalPrice (@PathParam("customer_id") int customerID, List<Rental> rentals) {
+    public Double totalRentalPrice (@PathParam("customer_id") int customerID,
+                                    List<Rental> rentals) {
 
         return rentalService.totalRentalPrice(rentals);
 
     }
-
+*/
 
     /** returns the price of the customer's films returned */
-
+/*
     @GET
     @Path("customers/{customer_id}/return/price)")
-    public Double totalReturnPrice (@PathParam("customer_id") int customerID, List<Rental> rentals) {
+    public Double totalReturnPrice (@PathParam("customer_id") int customerID,
+                                    List<Rental> rentals) {
 
         return rentalService.totalReturnPrice(rentals);
 
     }
-
+*/
 
     /** returns the bonus points by customer's id */
 
@@ -125,15 +142,15 @@ public class RentalResource {
 
 
     /** updates the bonus points by customer's id */
-
+/*
     @PUT
-    @Path("customers/{id}/bonus_points")
-    public int updateBonusPoints(@PathParam("id") int id, Customer customer, Film film) {
+    @Path("customers/{customer_id}/bonus_points")
+    public int updateBonusPoints(@PathParam("customer_id") int id, Customer customer, Film film) {
 
 
         return rentalService.rentalBonusPoints(customer, film);
 
     }
-
+*/
 
 }
