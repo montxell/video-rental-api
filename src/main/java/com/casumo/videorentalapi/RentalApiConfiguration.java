@@ -9,11 +9,13 @@ public class RentalApiConfiguration extends Configuration {
 
     @JsonProperty
     public String getEnvironment() {
+
         return environment;
     }
 
     @JsonProperty
     public void setEnvironment(String environment) {
+
         this.environment = environment;
     }
 
