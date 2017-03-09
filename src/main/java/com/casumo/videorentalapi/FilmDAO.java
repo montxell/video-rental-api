@@ -12,31 +12,37 @@ public class FilmDAO {
 
         this.films = new ArrayList<>();
 
-        Film v1 = new Film();
-        v1.setFilmID(1);
-        v1.setFilmName("Matrix 11");
-        v1.setFilmType("New");
-        films.add(v1);
+        Film f1 = new Film();
+        f1.setFilmID(1);
+        f1.setFilmName("Matrix 11");
+        f1.setFilmType("New");
+        films.add(f1);
 
-        Film v2 = new Film();
-        v2.setFilmID(2);
-        v2.setFilmName("Spiderman");
-        v2.setFilmType("Regular");
-        films.add(v2);
+        Film f2 = new Film();
+        f2.setFilmID(2);
+        f2.setFilmName("Spiderman");
+        f2.setFilmType("Regular");
+        films.add(f2);
 
-        Film v3 = new Film();
-        v3.setFilmID(3);
-        v3.setFilmName("Spiderman 2");
-        v3.setFilmType("Regular");
-        films.add(v3);
+        Film f3 = new Film();
+        f3.setFilmID(3);
+        f3.setFilmName("Spiderman 2");
+        f3.setFilmType("Regular");
+        films.add(f3);
 
-        Film v4 = new Film();
-        v4.setFilmID(4);
-        v4.setFilmName("Out of Africa");
-        v4.setFilmType("Old");
-        films.add(v4);
+        Film f4 = new Film();
+        f4.setFilmID(4);
+        f4.setFilmName("Out of Africa");
+        f4.setFilmType("Old");
+        films.add(f4);
 
     }
 
+
+
+    public List<Film> getFilms() {
+
+        return films;
+    }
 
 }

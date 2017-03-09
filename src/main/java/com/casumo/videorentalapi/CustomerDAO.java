@@ -33,9 +33,15 @@ public class CustomerDAO {
         Customer c4 = new Customer();
         c4.setCustomerID(4);
         c4.setCustomerName("Mary Williams");
-        c4.setBonusPoints(0);
         customers.add(c4);
 
+    }
+
+
+
+    public List<Customer> getCustomers() {
+
+        return customers;
     }
 
 }
