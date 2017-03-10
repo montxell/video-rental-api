@@ -88,7 +88,7 @@ public class RentalService {
 
             } else {
 
-                price = BASIC_PRICE * (rentalDays - MAX_DAYS_NO_SURCHARGE_FOR_REGULAR_FILM);
+                price = BASIC_PRICE + BASIC_PRICE * (rentalDays - MAX_DAYS_NO_SURCHARGE_FOR_REGULAR_FILM);
             }
 
         } else {
@@ -99,7 +99,7 @@ public class RentalService {
 
             } else {
 
-                price = BASIC_PRICE * (rentalDays - MAX_DAYS_NO_SURCHARGE_FOR_OLD_FILM);
+                price = BASIC_PRICE + BASIC_PRICE * (rentalDays - MAX_DAYS_NO_SURCHARGE_FOR_OLD_FILM);
             }
 
         }
@@ -111,11 +111,11 @@ public class RentalService {
 
     // Set the conditions when returning a film
 
-    public void returnRentedFilm(Rental rental, Film film, Date returnDate, Date rentalDate) {
+    public void returnRentedFilm(Rental rental, Film film, Date returnDate, Date rentalDate, int rentalDays) {
 
         rental.setReturnDate(new Date());
         rental.setReturned(true);
-        rental.setReturnPrice(filmTypeReturnPrice(film, returnDate, rentalDate));
+        rental.setReturnPrice(filmTypeReturnPrice(film, returnDate, rentalDate, rentalDays));
 
     }
 
@@ -147,32 +147,47 @@ public class RentalService {
 
     // Set the return price of the film by its type: New, Regular or Old
 
-    public double filmTypeReturnPrice(Film film, Date returnDate, Date rentalDate) {
+    public double filmTypeReturnPrice(Film film, Date returnDate, Date rentalDate, int rentalDays) {
 
         double price;
 
-        long extraDays = getDifferenceDays(returnDate, rentalDate);
+        Long daysUntilReturnLong = getDifferenceDays(returnDate, rentalDate);
+
+        int daysUntilReturn = daysUntilReturnLong.intValue();
 
 
-        if (film.getFilmType().equals("New")) {
+        // Difference between the day of returning the film and the renting days assigned in the rental
 
-            price = PREMIUM_PRICE * extraDays;
+        int extraDays = daysUntilReturn - rentalDays;
+
+        if (extraDays > 0) {
+
+            if (film.getFilmType().equals("New")) {
+
+                price = PREMIUM_PRICE * extraDays;
+
+            } else {
+
+                price = BASIC_PRICE * extraDays;
+
+            }
+
+            return price;
 
         } else {
 
-            price = BASIC_PRICE * extraDays;
-
+            return 0;
         }
-
-        return price;
     }
 
 
 
-    // Calculate the extra days to get the surcharges in filmTypeReturnPrice method
+    // Calculate the days until the return of the film
 
     public static long getDifferenceDays (Date returnDate, Date rentalDate) {
+
         long diff = returnDate.getTime() - rentalDate.getTime();
+
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
